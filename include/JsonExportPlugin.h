@@ -60,8 +60,11 @@ namespace Ogre
 			virtual bool isExport (void) const;
 			virtual const String& getImportMenuText (void) const;
 			virtual const String& getExportMenuText (void) const;
-			virtual bool executeImport(void);
-			virtual bool executeExport(void);
+			virtual bool executeImport(HlmsEditorPluginData* data);
+			virtual bool executeExport(HlmsEditorPluginData* data);
+
+		protected:
+			bool loadMaterial(const String& fileName);
     };
 }
 

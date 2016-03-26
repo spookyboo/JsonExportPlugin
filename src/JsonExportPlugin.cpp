@@ -28,10 +28,12 @@ Copyright (c) 2000-2014 Torus Knot Software Ltd
 
 #include "OgreRoot.h"
 #include "JsonExportPlugin.h"
+#include "OgreHlmsJson.h"
+#include "OgreHlmsManager.h"
+#include "OgreLogManager.h"
 
 namespace Ogre
 {
-    const String sPluginName = "HlmsEditorPlugin";
 	const String sImportMenuText = "";
 	const String sExportMenuText = "Export all to Json";
 	//---------------------------------------------------------------------
@@ -41,7 +43,7 @@ namespace Ogre
     //---------------------------------------------------------------------
     const String& JsonExportPlugin::getName() const
     {
-        return sPluginName;
+        return GENERAL_HLMS_PLUGIN_NAME;
     }
     //---------------------------------------------------------------------
     void JsonExportPlugin::install()
@@ -83,15 +85,75 @@ namespace Ogre
 		return sExportMenuText;
 	}
 	//---------------------------------------------------------------------
-	bool JsonExportPlugin::executeImport (void)
+	bool JsonExportPlugin::executeImport (HlmsEditorPluginData* data)
 	{
-		// TODO
+		// nothing to do
 		return true;
 	}
 	//---------------------------------------------------------------------
-	bool JsonExportPlugin::executeExport (void)
+	bool JsonExportPlugin::executeExport (HlmsEditorPluginData* data)
 	{
-		// TODO
+		// Error in case no materials available
+		if (data->mInMaterialFileNameVector.size() == 0)
+		{
+			data->mOutSuccessText = "No materials to export";
+			return true;
+		}
+
+		// Iterate through the json files of the material browser and load them into Ogre
+		std::vector<String> materials = data->mInMaterialFileNameVector;
+		std::vector<String>::iterator it;
+		std::vector<String>::iterator itStart = materials.begin();
+		std::vector<String>::iterator itEnd = materials.end();
+		String fileName;
+		for (it = itStart; it != itEnd; ++it)
+		{
+			// Load the materials
+			fileName = *it;
+			if (fileName.empty())
+			{
+				data->mOutErrorText = "Trying to process a non-existing material filename";
+				return false;
+			}
+
+			if (!loadMaterial(fileName))
+			{
+				data->mOutErrorText = "Error while processing the materials";
+				return false;
+			}
+		}
+
+		// TODO: Combine all currently created materials into one Json file
+
+		data->mOutSuccessText = "Exporting materials completed";
+		return true;
+	}
+
+	//---------------------------------------------------------------------
+	bool JsonExportPlugin::loadMaterial(const String& fileName)
+	{
+		// Read the json file as text file and feed it to the HlmsManager::loadMaterials() function
+		// Note, that the resources (textures, etc.) must be present
+
+		// First, delete all datablocks before loading the new ones
+		//initDatablocks();
+
+		// Read the json file
+		Root* root = Root::getSingletonPtr();
+		HlmsManager* hlmsManager = root->getHlmsManager();
+		//HlmsJson hlmsJson(hlmsManager);
+		try
+		{
+			// Load the datablocks (which also creates them)
+			//hlmsManager->loadMaterials(fileName, "General");
+			//hlmsJson.loadMaterials(fname, jsonChar);
+		}
+		catch (Ogre::Exception e)
+		{
+			LogManager::getSingleton().logMessage("JsonExportPlugin::loadMaterial(); Error while processing the materials\n");
+			return false;
+		}
+		
 		return true;
 	}
 }
