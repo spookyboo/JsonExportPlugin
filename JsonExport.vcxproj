@@ -90,7 +90,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>include;..\..\Projects\ogre\VCBuild\include;..\..\Projects\ogre\OgreMain\include;..\..\Projects\HLMSEditor\source\header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\..\Projects\ogre\VCBuild\include;..\..\Projects\ogre\OgreMain\include;..\..\Projects\ogre\Components\Hlms\Pbs\include;..\..\Projects\ogre\Components\Hlms\Unlit\include;..\..\Projects\ogre\Components\Hlms\Common\include;..\..\Projects\HLMSEditor\source\header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>..\..\Projects\ogre\VCBuild\lib\Debug\OgreMain_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -120,7 +120,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>include;..\..\Projects\ogre\VCBuild\include;..\..\Projects\ogre\OgreMain\include;..\..\Projects\HLMSEditor\source\header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\..\Projects\ogre\VCBuild\include;..\..\Projects\ogre\OgreMain\include;..\..\Projects\ogre\Components\Hlms\Pbs\include;..\..\Projects\ogre\Components\Hlms\Unlit\include;..\..\Projects\ogre\Components\Hlms\Common\include;..\..\Projects\HLMSEditor\source\header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

@@ -28,14 +28,21 @@ Copyright (c) 2000-2014 Torus Knot Software Ltd
 
 #include "OgreRoot.h"
 #include "JsonExportPlugin.h"
+#include "OgreHlmsPbs.h"
+#include "OgreHlmsPbsDatablock.h"
+#include "OgreHlmsUnlit.h"
+#include "OgreHlmsUnlitDatablock.h"
 #include "OgreHlmsJson.h"
 #include "OgreHlmsManager.h"
 #include "OgreLogManager.h"
+#include "OgreItem.h"
+#include <iostream>
+#include <fstream>
 
 namespace Ogre
 {
 	const String sImportMenuText = "";
-	const String sExportMenuText = "Export all to Json";
+	const String sExportMenuText = "JsonExport: Export material browser to Json";
 	//---------------------------------------------------------------------
 	JsonExportPlugin::JsonExportPlugin()
     {
@@ -48,7 +55,6 @@ namespace Ogre
     //---------------------------------------------------------------------
     void JsonExportPlugin::install()
     {
-        //Root* root = Root::getSingletonPtr();
     }
     //---------------------------------------------------------------------
     void JsonExportPlugin::initialise()
@@ -100,6 +106,9 @@ namespace Ogre
 			return true;
 		}
 
+		// First, delete all datablocks before loading the new ones
+		destroyAllDatablocks(data);
+
 		// Iterate through the json files of the material browser and load them into Ogre
 		std::vector<String> materials = data->mInMaterialFileNameVector;
 		std::vector<String>::iterator it;
@@ -123,9 +132,15 @@ namespace Ogre
 			}
 		}
 
-		// TODO: Combine all currently created materials into one Json file
-
-		data->mOutSuccessText = "Exporting materials completed";
+		// Combine all currently created materials into one Json file
+		Root* root = Root::getSingletonPtr();
+		HlmsManager* hlmsManager = root->getHlmsManager();
+		String exportPbsFileName = data->mInProjectName + ".pbs.material.json";
+		String exportUnlitFileName = data->mInProjectName + ".unlit.material.json";
+		data->mOutExportReference = exportPbsFileName + " + " + exportUnlitFileName;
+		hlmsManager->saveMaterials(HLMS_PBS, data->mInProjectPath + exportPbsFileName);
+		hlmsManager->saveMaterials(HLMS_UNLIT, data->mInProjectPath + exportUnlitFileName);
+		data->mOutSuccessText = "Exporting materials to " + data->mOutExportReference;
 		return true;
 	}
 
@@ -133,27 +148,91 @@ namespace Ogre
 	bool JsonExportPlugin::loadMaterial(const String& fileName)
 	{
 		// Read the json file as text file and feed it to the HlmsManager::loadMaterials() function
-		// Note, that the resources (textures, etc.) must be present
+		// Note, that the resources (textures, etc.) must be present (in resource loacation)
 
-		// First, delete all datablocks before loading the new ones
-		//initDatablocks();
-
-		// Read the json file
 		Root* root = Root::getSingletonPtr();
 		HlmsManager* hlmsManager = root->getHlmsManager();
-		//HlmsJson hlmsJson(hlmsManager);
+		HlmsJson hlmsJson(hlmsManager);
+
+		// Read the content of the file into a string/char*
+		std::ifstream inFile;
+		inFile.open(fileName);
+
+		std::stringstream strStream;
+		strStream << inFile.rdbuf();
+		String jsonAsString = strStream.str();
+
+		std::cout << jsonAsString << std::endl;
+		inFile.close();
+		const char* jsonAsChar = jsonAsString.c_str();
+
 		try
 		{
 			// Load the datablocks (which also creates them)
-			//hlmsManager->loadMaterials(fileName, "General");
-			//hlmsJson.loadMaterials(fname, jsonChar);
+			hlmsJson.loadMaterials(fileName, jsonAsChar); // The fileName is only used for logging and has no purpose
 		}
-		catch (Ogre::Exception e)
+		
+		catch (Exception e)
 		{
 			LogManager::getSingleton().logMessage("JsonExportPlugin::loadMaterial(); Error while processing the materials\n");
 			return false;
 		}
 		
 		return true;
+	}
+
+
+	//****************************************************************************/
+	void JsonExportPlugin::destroyAllDatablocks(HlmsEditorPluginData* data)
+	{
+		// Get the datablock from the current item and remove it
+		Item* item = data->mInItem;
+		HlmsDatablock* itemDatablock = data->mInOutCurrenDatablock;
+		Root* root = Root::getSingletonPtr();
+		HlmsManager* hlmsManager = root->getHlmsManager();
+		HlmsPbs* hlmsPbs = static_cast<HlmsPbs*>(hlmsManager->getHlms(HLMS_PBS));
+		HlmsUnlit* hlmsUnlit = static_cast<HlmsUnlit*>(hlmsManager->getHlms(HLMS_UNLIT));
+
+		if (itemDatablock != hlmsUnlit->getDefaultDatablock())
+			item->setDatablock(hlmsUnlit->getDefaultDatablock());
+		else
+			if (itemDatablock != hlmsPbs->getDefaultDatablock())
+				item->setDatablock(hlmsPbs->getDefaultDatablock());
+			else
+				item->setDatablock("[Default]");
+
+		// Iterate through all pbs datablocks and remove them
+		Hlms::HlmsDatablockMap::const_iterator itorPbs = hlmsPbs->getDatablockMap().begin();
+		Hlms::HlmsDatablockMap::const_iterator endPbs = hlmsPbs->getDatablockMap().end();
+		HlmsPbsDatablock* pbsDatablock;
+		while (itorPbs != endPbs)
+		{
+			pbsDatablock = static_cast<HlmsPbsDatablock*>(itorPbs->second.datablock);
+			if (pbsDatablock != hlmsPbs->getDefaultDatablock() &&
+				pbsDatablock != hlmsUnlit->getDefaultDatablock())
+			{
+				hlmsPbs->destroyDatablock(pbsDatablock->getName());
+				itorPbs = hlmsPbs->getDatablockMap().begin(); // Start from the beginning again
+			}
+			else
+				++itorPbs;
+		}
+
+		// Iterate through all unlit datablocks and remove them
+		Hlms::HlmsDatablockMap::const_iterator itorUnlit = hlmsUnlit->getDatablockMap().begin();
+		Hlms::HlmsDatablockMap::const_iterator endUnlit = hlmsUnlit->getDatablockMap().end();
+		HlmsUnlitDatablock* unlitDatablock;
+		while (itorUnlit != endUnlit)
+		{
+			unlitDatablock = static_cast<HlmsUnlitDatablock*>(itorUnlit->second.datablock);
+			if (unlitDatablock != hlmsPbs->getDefaultDatablock() &&
+				unlitDatablock != hlmsUnlit->getDefaultDatablock())
+			{
+				hlmsUnlit->destroyDatablock(unlitDatablock->getName());
+				itorUnlit = hlmsUnlit->getDatablockMap().begin(); // Start from the beginning again
+			}
+			else
+				++itorUnlit;
+		}
 	}
 }
