@@ -8,7 +8,7 @@ The 'Json Export Plugin' makes use of the generic plugin mechanism of Ogre3D.
 
 **Plugin creation:**  
 You can use the 'Json Export Plugin' code to create your own plugins and import/export materials from/to different sources. It works as a generic Ogre3d plugin, which means that
-you have to create a [yourname]Plugin.h / [yourname]Plugin.cpp to implement custom import/export code and a [yourname]Dll.cpp that acts as an entrypoint.
+you have to create a [_yourname_]Plugin.h / [_yourname_]Plugin.cpp to implement custom import/export code and a [_yourname_]Dll.cpp that acts as an entrypoint.
 Your custom plugin extends from HlmsEditorPlugin (defined in hlms_editor_plugin.h), which means that it not only has to implement the Ogre3d plugin methods, 
 such as getName(), install(), initialise(), shutdown() and uninstall(), but also some functions that are needed to communicate with the HLMS Editor.
 The HLMS Editor recognizes the plugin by its name. Function getName() must always return the value "HlmsEditorPlugin".  
