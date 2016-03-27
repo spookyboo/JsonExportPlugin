@@ -120,16 +120,12 @@ namespace Ogre
 				return false;
 			}
 
-			try
+			// If an Exception is thrown, it may be because the loaded material is already available; just ignore it
+			if (!loadMaterial(fileName))
 			{
-				// If an Exception is thrown, it may be because the loaded material is already available; just ignore it
-				if (!loadMaterial(fileName))
-				{
-					data->mOutErrorText = "Error while processing the materials";
-					return false;
-				}
+				data->mOutErrorText = "Error while processing the materials";
+				return false;
 			}
-			catch (Exception e) {}
 		}
 
 		// Combine all currently created materials into one Json file
@@ -172,11 +168,8 @@ namespace Ogre
 			hlmsJson.loadMaterials(fileName, jsonAsChar); // The fileName is only used for logging and has no purpose
 		}
 		
-		catch (Exception e)
-		{
-			LogManager::getSingleton().logMessage("JsonExportPlugin::loadMaterial(); Error while processing the materials\n");
-			return false;
-		}
+		// If an Exception is thrown, it may be because the loaded material is already available; just ignore it
+		catch (Exception e){}
 		
 		return true;
 	}
