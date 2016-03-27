@@ -41,8 +41,6 @@ Copyright (c) 2000-2014 Torus Knot Software Ltd
 
 namespace Ogre
 {
-	const String sImportMenuText = "";
-	const String sExportMenuText = "JsonExport: Export material browser to Json";
 	//---------------------------------------------------------------------
 	JsonExportPlugin::JsonExportPlugin()
     {
@@ -83,12 +81,12 @@ namespace Ogre
 	//---------------------------------------------------------------------
 	const String& JsonExportPlugin::getImportMenuText (void) const
 	{
-		return sImportMenuText;
+		return "";
 	}
 	//---------------------------------------------------------------------
 	const String& JsonExportPlugin::getExportMenuText (void) const
 	{
-		return sExportMenuText;
+		return "JsonExport: Export material browser to Json";
 	}
 	//---------------------------------------------------------------------
 	bool JsonExportPlugin::executeImport (HlmsEditorPluginData* data)
@@ -106,9 +104,6 @@ namespace Ogre
 			return true;
 		}
 
-		// First, delete all datablocks before loading the new ones
-		destroyAllDatablocks(data);
-
 		// Iterate through the json files of the material browser and load them into Ogre
 		std::vector<String> materials = data->mInMaterialFileNameVector;
 		std::vector<String>::iterator it;
@@ -125,11 +120,16 @@ namespace Ogre
 				return false;
 			}
 
-			if (!loadMaterial(fileName))
+			try
 			{
-				data->mOutErrorText = "Error while processing the materials";
-				return false;
+				// If an Exception is thrown, it may be because the loaded material is already available; just ignore it
+				if (!loadMaterial(fileName))
+				{
+					data->mOutErrorText = "Error while processing the materials";
+					return false;
+				}
 			}
+			catch (Exception e) {}
 		}
 
 		// Combine all currently created materials into one Json file
@@ -179,60 +179,5 @@ namespace Ogre
 		}
 		
 		return true;
-	}
-
-
-	//****************************************************************************/
-	void JsonExportPlugin::destroyAllDatablocks(HlmsEditorPluginData* data)
-	{
-		// Get the datablock from the current item and remove it
-		Item* item = data->mInItem;
-		HlmsDatablock* itemDatablock = data->mInOutCurrenDatablock;
-		Root* root = Root::getSingletonPtr();
-		HlmsManager* hlmsManager = root->getHlmsManager();
-		HlmsPbs* hlmsPbs = static_cast<HlmsPbs*>(hlmsManager->getHlms(HLMS_PBS));
-		HlmsUnlit* hlmsUnlit = static_cast<HlmsUnlit*>(hlmsManager->getHlms(HLMS_UNLIT));
-
-		if (itemDatablock != hlmsUnlit->getDefaultDatablock())
-			item->setDatablock(hlmsUnlit->getDefaultDatablock());
-		else
-			if (itemDatablock != hlmsPbs->getDefaultDatablock())
-				item->setDatablock(hlmsPbs->getDefaultDatablock());
-			else
-				item->setDatablock("[Default]");
-
-		// Iterate through all pbs datablocks and remove them
-		Hlms::HlmsDatablockMap::const_iterator itorPbs = hlmsPbs->getDatablockMap().begin();
-		Hlms::HlmsDatablockMap::const_iterator endPbs = hlmsPbs->getDatablockMap().end();
-		HlmsPbsDatablock* pbsDatablock;
-		while (itorPbs != endPbs)
-		{
-			pbsDatablock = static_cast<HlmsPbsDatablock*>(itorPbs->second.datablock);
-			if (pbsDatablock != hlmsPbs->getDefaultDatablock() &&
-				pbsDatablock != hlmsUnlit->getDefaultDatablock())
-			{
-				hlmsPbs->destroyDatablock(pbsDatablock->getName());
-				itorPbs = hlmsPbs->getDatablockMap().begin(); // Start from the beginning again
-			}
-			else
-				++itorPbs;
-		}
-
-		// Iterate through all unlit datablocks and remove them
-		Hlms::HlmsDatablockMap::const_iterator itorUnlit = hlmsUnlit->getDatablockMap().begin();
-		Hlms::HlmsDatablockMap::const_iterator endUnlit = hlmsUnlit->getDatablockMap().end();
-		HlmsUnlitDatablock* unlitDatablock;
-		while (itorUnlit != endUnlit)
-		{
-			unlitDatablock = static_cast<HlmsUnlitDatablock*>(itorUnlit->second.datablock);
-			if (unlitDatablock != hlmsPbs->getDefaultDatablock() &&
-				unlitDatablock != hlmsUnlit->getDefaultDatablock())
-			{
-				hlmsUnlit->destroyDatablock(unlitDatablock->getName());
-				itorUnlit = hlmsUnlit->getDatablockMap().begin(); // Start from the beginning again
-			}
-			else
-				++itorUnlit;
-		}
 	}
 }

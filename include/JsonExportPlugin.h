@@ -65,7 +65,6 @@ namespace Ogre
 
 		protected:
 			bool loadMaterial(const String& fileName);
-			void destroyAllDatablocks(HlmsEditorPluginData* data);
     };
 }
 
