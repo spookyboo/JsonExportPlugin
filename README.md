@@ -16,4 +16,4 @@ The HLMS Editor recognizes the plugin by its name. Function getName() must alway
 The HLMS Editor and the plugin communicate by means of the HlmsEditorPluginData object, which is defined in hlms_editor_plugin.h
 
 **Installation:**  
-Just add your plugin to the plugins.cfg file (under HLMSEditor/bin) and that's all; the HLMS Editor recognized it if you have followed the rules above.
+Just add the plugin to the plugins.cfg file (under HLMSEditor/bin) and that's all (eg. Plugin=JsonExport); the HLMS Editor recognized it if you have followed the rules above.
