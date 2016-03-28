@@ -69,6 +69,11 @@ namespace Ogre
     {
     }
 	//---------------------------------------------------------------------
+	bool JsonExportPlugin::isOpenFileDialogForImport(void) const
+	{
+		return false;
+	}
+	//---------------------------------------------------------------------
 	bool JsonExportPlugin::isImport (void) const
 	{
 		return false;
