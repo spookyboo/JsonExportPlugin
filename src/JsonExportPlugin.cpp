@@ -41,6 +41,8 @@ Copyright (c) 2000-2014 Torus Knot Software Ltd
 
 namespace Ogre
 {
+	static const String gImportMenuText = "";
+	static const String gExportMenuText = "JsonExport: Export material browser to Json";
 	//---------------------------------------------------------------------
 	JsonExportPlugin::JsonExportPlugin()
     {
@@ -79,6 +81,11 @@ namespace Ogre
 		return false;
 	}
 	//---------------------------------------------------------------------
+	bool JsonExportPlugin::isOpenFileDialogForExport(void) const
+	{
+		return false;
+	}
+	//---------------------------------------------------------------------
 	bool JsonExportPlugin::isExport (void) const
 	{
 		return true;
@@ -86,12 +93,12 @@ namespace Ogre
 	//---------------------------------------------------------------------
 	const String& JsonExportPlugin::getImportMenuText (void) const
 	{
-		return "";
+		return gImportMenuText;
 	}
 	//---------------------------------------------------------------------
 	const String& JsonExportPlugin::getExportMenuText (void) const
 	{
-		return "JsonExport: Export material browser to Json";
+		return gExportMenuText;
 	}
 	//---------------------------------------------------------------------
 	bool JsonExportPlugin::executeImport (HlmsEditorPluginData* data)
