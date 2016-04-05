@@ -101,6 +101,11 @@ namespace Ogre
 		return gExportMenuText;
 	}
 	//---------------------------------------------------------------------
+	bool JsonExportPlugin::isTexturesUsedByDatablocksForExport(void) const
+	{
+		return false;
+	}
+	//---------------------------------------------------------------------
 	bool JsonExportPlugin::executeImport (HlmsEditorPluginData* data)
 	{
 		// nothing to do
