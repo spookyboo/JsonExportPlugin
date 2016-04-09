@@ -153,7 +153,7 @@ namespace Ogre
 		data->mOutExportReference = exportPbsFileName + " + " + exportUnlitFileName;
 		hlmsManager->saveMaterials(HLMS_PBS, data->mInProjectPath + exportPbsFileName);
 		hlmsManager->saveMaterials(HLMS_UNLIT, data->mInProjectPath + exportUnlitFileName);
-		data->mOutSuccessText = "Exporting materials to " + data->mOutExportReference;
+		data->mOutSuccessText = "Exported materials to " + data->mOutExportReference;
 		return true;
 	}
 
