@@ -91,6 +91,26 @@ namespace Ogre
 		return true;
 	}
 	//---------------------------------------------------------------------
+	void JsonExportPlugin::performPreImportActions(void)
+	{
+		// Nothing to do
+	}
+	//---------------------------------------------------------------------
+	void JsonExportPlugin::performPostImportActions(void)
+	{
+		// Nothing to do
+	}
+	//---------------------------------------------------------------------
+	void JsonExportPlugin::performPreExportActions(void)
+	{
+		// Nothing to do
+	}
+	//---------------------------------------------------------------------
+	void JsonExportPlugin::performPostExportActions(void)
+	{
+		// Nothing to do
+	}
+	//---------------------------------------------------------------------
 	const String& JsonExportPlugin::getImportMenuText (void) const
 	{
 		return gImportMenuText;

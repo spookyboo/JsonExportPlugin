@@ -90,10 +90,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>include;..\..\Projects\ogre\VCBuild\include;..\..\Projects\ogre\OgreMain\include;..\..\Projects\ogre\Components\Hlms\Pbs\include;..\..\Projects\ogre\Components\Hlms\Unlit\include;..\..\Projects\ogre\Components\Hlms\Common\include;..\..\Projects\HLMSEditor\source\header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\..\Projects\ogre2.1\VCBuild\include;..\..\Projects\ogre2.1\OgreMain\include;..\..\Projects\ogre2.1\Components\Hlms\Pbs\include;..\..\Projects\ogre2.1\Components\Hlms\Unlit\include;..\..\Projects\ogre2.1\Components\Hlms\Common\include;..\..\Projects\HLMSEditor\source\header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>..\..\Projects\ogre\VCBuild\lib\Debug\OgreMain_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\Projects\ogre2.1\VCBuild\lib\Debug\OgreMain_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <ProgramDatabaseFile>$(OutDir)$(TargetName)_d.pdb</ProgramDatabaseFile>
       <ImportLibrary>$(OutDir)$(TargetName)_d.lib</ImportLibrary>
@@ -120,12 +120,12 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>include;..\..\Projects\ogre\VCBuild\include;..\..\Projects\ogre\OgreMain\include;..\..\Projects\ogre\Components\Hlms\Pbs\include;..\..\Projects\ogre\Components\Hlms\Unlit\include;..\..\Projects\ogre\Components\Hlms\Common\include;..\..\Projects\HLMSEditor\source\header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>include;..\..\Projects\ogre2.1\VCBuild\include;..\..\Projects\ogre2.1\OgreMain\include;..\..\Projects\ogre2.1\Components\Hlms\Pbs\include;..\..\Projects\ogre2.1\Components\Hlms\Unlit\include;..\..\Projects\ogre2.1\Components\Hlms\Common\include;..\..\Projects\HLMSEditor\source\header;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>..\..\Projects\ogre\VCBuild\lib\Release\OgreMain.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\..\Projects\ogre2.1\VCBuild\lib\Release\OgreMain.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>

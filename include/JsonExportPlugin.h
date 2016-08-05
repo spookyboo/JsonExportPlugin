@@ -65,6 +65,10 @@ namespace Ogre
 			virtual const String& getExportMenuText (void) const;
 			virtual bool executeImport(HlmsEditorPluginData* data);
 			virtual bool executeExport(HlmsEditorPluginData* data);
+			virtual void performPreImportActions(void);
+			virtual void performPostImportActions(void);
+			virtual void performPreExportActions(void);
+			virtual void performPostExportActions(void);
 
 		protected:
 			bool loadMaterial(const String& fileName);
