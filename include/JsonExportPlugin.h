@@ -69,6 +69,7 @@ namespace Ogre
 			virtual void performPostImportActions(void);
 			virtual void performPreExportActions(void);
 			virtual void performPostExportActions(void);
+			virtual unsigned int getActionFlag(void);
 
 		protected:
 			bool loadMaterial(const String& fileName);

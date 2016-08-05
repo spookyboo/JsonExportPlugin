@@ -111,6 +111,12 @@ namespace Ogre
 		// Nothing to do
 	}
 	//---------------------------------------------------------------------
+	unsigned int JsonExportPlugin::getActionFlag(void)
+	{
+		return 0;
+	}
+
+	//---------------------------------------------------------------------
 	const String& JsonExportPlugin::getImportMenuText (void) const
 	{
 		return gImportMenuText;
