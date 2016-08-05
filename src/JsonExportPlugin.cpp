@@ -42,7 +42,7 @@ Copyright (c) 2000-2014 Torus Knot Software Ltd
 namespace Ogre
 {
 	static const String gImportMenuText = "";
-	static const String gExportMenuText = "JsonExport: Export material browser to Json";
+	static const String gExportMenuText = "Material browser to Json";
 	//---------------------------------------------------------------------
 	JsonExportPlugin::JsonExportPlugin()
     {
