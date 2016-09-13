@@ -71,17 +71,7 @@ namespace Ogre
     {
     }
 	//---------------------------------------------------------------------
-	bool JsonExportPlugin::isOpenFileDialogForImport(void) const
-	{
-		return false;
-	}
-	//---------------------------------------------------------------------
 	bool JsonExportPlugin::isImport (void) const
-	{
-		return false;
-	}
-	//---------------------------------------------------------------------
-	bool JsonExportPlugin::isOpenFileDialogForExport(void) const
 	{
 		return false;
 	}
@@ -125,11 +115,6 @@ namespace Ogre
 	const String& JsonExportPlugin::getExportMenuText (void) const
 	{
 		return gExportMenuText;
-	}
-	//---------------------------------------------------------------------
-	bool JsonExportPlugin::isTexturesUsedByDatablocksForExport(void) const
-	{
-		return false;
 	}
 	//---------------------------------------------------------------------
 	bool JsonExportPlugin::executeImport (HlmsEditorPluginData* data)
@@ -176,10 +161,10 @@ namespace Ogre
 		HlmsManager* hlmsManager = root->getHlmsManager();
 		String exportPbsFileName = data->mInProjectName + ".pbs.material.json";
 		String exportUnlitFileName = data->mInProjectName + ".unlit.material.json";
-		data->mOutExportReference = exportPbsFileName + " + " + exportUnlitFileName;
+		data->mOutReference = exportPbsFileName + " + " + exportUnlitFileName;
 		hlmsManager->saveMaterials(HLMS_PBS, data->mInProjectPath + exportPbsFileName);
 		hlmsManager->saveMaterials(HLMS_UNLIT, data->mInProjectPath + exportUnlitFileName);
-		data->mOutSuccessText = "Exported materials to " + data->mOutExportReference;
+		data->mOutSuccessText = "Exported materials to " + data->mOutReference;
 		return true;
 	}
 
