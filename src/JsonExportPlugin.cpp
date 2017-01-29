@@ -193,7 +193,9 @@ namespace Ogre
 		try
 		{
 			// Load the datablocks (which also creates them)
-			hlmsJson.loadMaterials(fileName, jsonAsChar); // The fileName is only used for logging and has no purpose
+			hlmsJson.loadMaterials(fileName, 
+				Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+				jsonAsChar); // The fileName is only used for logging and has no purpose
 		}
 		
 		// If an Exception is thrown, it may be because the loaded material is already available; just ignore it
