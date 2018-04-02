@@ -162,8 +162,8 @@ namespace Ogre
 		String exportPbsFileName = data->mInProjectName + ".pbs.material.json";
 		String exportUnlitFileName = data->mInProjectName + ".unlit.material.json";
 		data->mOutReference = exportPbsFileName + " + " + exportUnlitFileName;
-		hlmsManager->saveMaterials(HLMS_PBS, data->mInProjectPath + exportPbsFileName);
-		hlmsManager->saveMaterials(HLMS_UNLIT, data->mInProjectPath + exportUnlitFileName);
+		hlmsManager->saveMaterials(HLMS_PBS, data->mInProjectPath + exportPbsFileName, 0, "");
+		hlmsManager->saveMaterials(HLMS_UNLIT, data->mInProjectPath + exportUnlitFileName, 0, "");
 		data->mOutSuccessText = "Exported materials to " + data->mOutReference;
 		return true;
 	}
@@ -176,7 +176,7 @@ namespace Ogre
 
 		Root* root = Root::getSingletonPtr();
 		HlmsManager* hlmsManager = root->getHlmsManager();
-		HlmsJson hlmsJson(hlmsManager);
+		HlmsJson hlmsJson(hlmsManager, 0);
 
 		// Read the content of the file into a string/char*
 		std::ifstream inFile;
@@ -195,7 +195,8 @@ namespace Ogre
 			// Load the datablocks (which also creates them)
 			hlmsJson.loadMaterials(fileName, 
 				Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-				jsonAsChar); // The fileName is only used for logging and has no purpose
+				jsonAsChar,
+				""); // The fileName is only used for logging and has no purpose
 		}
 		
 		// If an Exception is thrown, it may be because the loaded material is already available; just ignore it
